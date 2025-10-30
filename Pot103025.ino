@@ -1,0 +1,156 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+//const int trigPin = 9;
+//const int echoPin = 10;
+
+//float duration, distance;
+
+int Letter[] = {1,2,3,4,5,6,7};
+// char letter[] = {"C","D","E","F","G", "A","B"}
+
+float a=8;
+float b = a+4;
+
+const int buzzerPin = 9;  //BUZZER: is pin 9
+
+
+
+
+
+void setup() {
+
+  //BUZZER setup
+  pinMode(buzzerPin,OUTPUT);
+  
+  //pinMode(trigPin, OUTPUT);
+  //pinMode(echoPin, INPUT);
+  pinMode(A1,INPUT);
+  pinMode(3,OUTPUT);
+  pinMode(2,OUTPUT);
+  Serial.begin(9600);
+  randomSeed(analogRead(0));
+
+  lcd.init();
+  lcd.backlight();
+
+
+  lcd.print("Hello World!");
+}
+
+int selectedValue = Letter[0];
+
+
+
+
+
+void cycle() {
+  int randomIndex = random(0,7);
+  selectedValue = Letter[randomIndex];
+  Serial.println("cycle function");
+  delay(1000);
+  Serial.println(selectedValue);
+  return randomIndex;
+  
+}
+
+
+
+
+
+
+
+
+void loop() {
+
+
+//BUZZER CODE
+  analogWrite(buzzerPin, 100);
+
+  
+    //Ultrasonic Sensor Code
+  //digitalWrite(trigPin, LOW);
+  //delayMicroseconds(2);
+  //digitalWrite(trigPin, HIGH);
+  //delayMicroseconds(10);
+  //digitalWrite(trigPin, LOW);
+
+  //duration = pulseIn(echoPin, HIGH);
+  //distance = (duration*.0343)/2; 
+  //Serial.print("Distance: ");
+  //Serial.println(distance);
+  //delay(100);
+
+  int potOut = analogRead(A1);
+  Serial.println(potOut);
+
+  //Serial.println("before if statement");
+  if (a < potOut && potOut < b) {
+    //Serial.println("if statement is true");
+    digitalWrite(3,LOW);
+    digitalWrite(2,HIGH);
+    cycle();
+    //Serial.println(selectedValue);
+  } else{
+    digitalWrite(3,HIGH);
+    digitalWrite(2,LOW);
+  }
+ 
+
+  //Serial.println(selectedValue);
+  lcd.clear();
+
+  if (selectedValue == 1){
+  lcd.print("A");
+  a=200;
+  
+  }
+
+  if (selectedValue == 2){
+  lcd.print("B");
+  a=300;
+  }
+
+  if (selectedValue == 3){
+  lcd.print("C");
+  a=400;
+  }
+
+  if (selectedValue == 4){
+  lcd.print("D");
+  a=500;
+  }
+
+  if (selectedValue == 5){
+  lcd.print("E");
+  a=600;
+  }
+
+  if (selectedValue == 6){
+  lcd.print("F");
+  a=700;
+  }
+
+  if (selectedValue == 7){
+  lcd.print("G");
+  a=800;
+  }
+
+b=a+50;
+a=a-50;
+
+  //Serial.print("Range: (");
+  //Serial.print(a);
+  //Serial.print(",");
+  //Serial.print(b);
+  //Serial.println(")");
+
+  delay(100);
+
+
+
+
+  
+}
